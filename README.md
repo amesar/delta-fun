@@ -20,6 +20,12 @@ cd scala
 sbt "set test in assembly := {}" assembly
 ```
 
+### Python Jupyter
+Before launching Jupyter set the following environment variable.
+```
+export PYSPARK_SUBMIT_ARGS="--packages io.delta:delta-core_2.12:0.2.0 pyspark-shell"
+```
+
 ## Hello World
 
 Based upon https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta.
@@ -49,7 +55,9 @@ object HelloWorld {
 ```
 
 #### Python
+
 [hello_world.py](python/hello_world.py)
+or [hello_world.ipynb](python/hello_world.ipynb).
 ```
 from pyspark.sql import SparkSession
 spark = SparkSession.builder.appName("HelloWorld").getOrCreate()
