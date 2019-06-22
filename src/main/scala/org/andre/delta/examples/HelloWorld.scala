@@ -1,4 +1,4 @@
-package org.andre.delta.sample
+package org.andre.delta.examples
 
 import org.apache.spark.sql.SparkSession
 

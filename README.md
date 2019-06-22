@@ -15,11 +15,11 @@ sbt "set test in assembly := {}" assembly
 
 ## Hello World
 
-Base upon https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta.
+Based upon https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta.
 
 ### Code
 
-[HelloWorld.scala](src/main/scala/org/andre/delta/sample/HelloWorld.scala)
+[HelloWorld.scala](src/main/scala/org/andre/delta/examples/HelloWorld.scala)
 ```
 package org.andre
 import org.apache.spark.sql.SparkSession
@@ -42,7 +42,7 @@ object HelloWorld {
 ### Run
 
 ```
-spark-submit --master local[2] --class org.andre.delta.sample.HelloWorld \
+spark-submit --master local[2] --class org.andre.delta.examples.HelloWorld \
   target/scala-2.11/delta-fun-assembly-0.0.1-SNAPSHOT.jar
 ```
 
