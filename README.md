@@ -3,13 +3,20 @@
 Some fun with https://delta.io and https://github.com/delta-io/delta.
 
 ## Requirements
-* Scala - 2.11.12
-* sbt
 * Spark - 2.4.2
+* Scala
+  * Scala - 2.11.12
+  * sbt
 
-## Build uber jar
+For full details see: https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta.
 
+## Setup
+
+### Scala
+
+Build uber jar.
 ```
+cd scala
 sbt "set test in assembly := {}" assembly
 ```
 
@@ -18,6 +25,8 @@ sbt "set test in assembly := {}" assembly
 Based upon https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta.
 
 ### Code
+
+#### Scala
 
 [HelloWorld.scala](src/main/scala/org/andre/delta/examples/HelloWorld.scala)
 ```
@@ -39,14 +48,42 @@ object HelloWorld {
 }
 ```
 
+#### Python
+[hello_world.py](python/hello_world.py)
+```
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("HelloWorld").getOrCreate()
+
+dataPath = "delta-table"
+print("dataPath: "+dataPath)
+data = spark.range(0, 5)
+data.write.format("delta").save(dataPath)
+df = spark.read.format("delta").load(dataPath)
+print("Data:\n")
+df.show()
+print("Schema:\n")
+df.printSchema()
+```
+
+
 ### Run
 
+#### Scala
 ```
+cd scala
 spark-submit --master local[2] --class org.andre.delta.examples.HelloWorld \
   target/scala-2.11/delta-fun-assembly-0.0.1-SNAPSHOT.jar
 ```
 
-Output
+#### Python
+```
+cd python
+spark-submit --master local[2] \
+  --packages io.delta:delta-core_2.12:0.2.0 \
+  hello_world.py
+```
+
+#### Output
 ```
 dataPath: delta-table
 
