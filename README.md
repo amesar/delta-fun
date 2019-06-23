@@ -2,22 +2,42 @@
   
 Some fun with https://delta.io and https://github.com/delta-io/delta.
 
+## Overview
+
+**Examples**
+* Hello World - Scala and Python (script and Jupyter notebook).
+* Time Travel - Basic Delta time travel. Scala and Python (script and Jupyter notebook).
+
+**Notes**
+* Examples run with OSS Delta on laptop.
+* All code is instrumented to run on Databricks as well.
+* Notebooks can run as Jupyter of Databricks notebooks.
+
+
 ## Requirements
-* Spark - 2.4.2
-* Scala
-  * Scala - 2.11.12
+* Spark 2.4.2
+* Python 3.6
+* Scala:
+  * Scala 2.12.8
   * sbt
 
 For full details see: https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta.
+
 
 ## Setup
 
 ### Scala
 
-Build uber jar.
+For local use, build the uber jar.
 ```
 cd scala
 sbt "set test in assembly := {}" assembly
+```
+
+For use in Databricks cluster, build the slim jar.
+```
+cd scala
+sbt package
 ```
 
 ### Python Jupyter
@@ -34,7 +54,7 @@ Based upon https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-wit
 
 #### Scala
 
-[HelloWorld.scala](src/main/scala/org/andre/delta/examples/HelloWorld.scala)
+[HelloWorld.scala](scala/src/main/scala/org/andre/delta/examples/HelloWorld.scala)
 ```
 package org.andre
 import org.apache.spark.sql.SparkSession
@@ -175,4 +195,58 @@ ls delta-table/\_delta_log
   }
 }
 . . .
+```
+
+## Time Travel
+
+Insert three batches of data and query each version with time travel.
+```
+spark.read.format("delta").option("versionAsOf", "1")).load(dataPath).show()
+```
+
+### Scala
+
+Source: [TimeTravel.scala](scala/src/main/scala/org/andre/delta/examples/TimeTravel.scala).
+
+```
+cd scala
+spark-submit --master local[2] --class org.andre.delta.examples.TimeTravel \
+  target/scala-2.11/delta-fun-assembly-0.0.1-SNAPSHOT.jar
+```
+
+#### Run in Databricks
+Run with [run_submit.json](scala/run_submit.json) run spec.
+```
+databricks runs submit --json-file run_submit.json
+```
+
+First push the _slim_ jar to DBFS.
+```
+databricks fs cp \
+  target/scala-2.11/delta-fun_2.11-0.0.1-SNAPSHOT.jar \
+  dbfs:/delta_fun/jars/delta-fun-assembly-0.0.1-SNAPSHOT.jar \
+   --overwrite
+```
+
+### Python
+
+Source: [time_travel.py.scala](python/time_travel.py) or [time_travel.ipynb](python/time_travel.ipynb).
+```
+cd python
+spark-submit --master local[2] \
+  --packages io.delta:delta-core_2.12:0.2.0 \
+  time_travel.py
+```
+
+#### Run in Databricks
+Run with [run_submit.json](python/run_submit.json) run spec.
+```
+databricks runs submit --json-file run_submit.json
+```
+
+First push the Python script to DBFS.
+```
+databricks fs cp time_travel.py \
+  dbfs:/delta_fun/python/time_travel.py \
+   --overwrite
 ```
