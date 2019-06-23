@@ -1,0 +1,16 @@
+{
+  "run_name": "delta-fun",
+  "new_cluster": {
+    "spark_version": "5.4.x-scala2.11",
+    "node_type_id": "i3.xlarge",
+    "num_workers": 1
+  },
+  "libraries": [
+    { "jar": "dbfs:/jars/delta-fun_2.11-0.0.1-SNAPSHOT.jar" }
+  ],
+  "timeout_seconds": 3600,
+  "spark_jar_task": {
+     "main_class_name": "org.andre.delta.examples.TimeTravel",
+     "parameters": [ "dbfs:/delta_fun/data/cats", "delta_fun", "cats" ]
+  }
+}
