@@ -230,7 +230,7 @@ databricks fs cp \
 
 ### Python
 
-Source: [time_travel.py.scala](python/time_travel.py) or [time_travel.ipynb](python/time_travel.ipynb).
+Source: [time_travel.py](python/time_travel.py) or [time_travel.ipynb](python/time_travel.ipynb).
 ```
 cd python
 spark-submit --master local[2] \
