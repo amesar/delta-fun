@@ -6,7 +6,7 @@ object TimeTravel {
   val spark = SparkSession.builder.appName("TimeTravel").getOrCreate()
   import spark.implicits._
   println("==== TimeTravel Demo")
-  println("spark.version:",spark.version)
+  println("spark.version:"+spark.version)
   val inDatabricks = System.getenv().get("DATABRICKS_RUNTIME_VERSION") != null
   println("inDatabricks: "+inDatabricks)
              
