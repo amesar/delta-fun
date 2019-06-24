@@ -10,6 +10,7 @@
   },
   "timeout_seconds": 3600,
   "spark_python_task": {
-    "python_file": "dbfs:/delta_fun/python/time_travel.py"
+    "python_file": "dbfs:/delta_fun/python/time_travel.py",
+    "parameters": [ "dbfs:/delta_fun/data/cats", "delta_fun", "cats" ]
   }
 }
